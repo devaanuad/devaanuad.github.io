@@ -12,7 +12,9 @@
   <!-- Favicons -->
   <link href="assets/img/favicon.png" rel="icon">
   <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
-
+  <script
+  src="https://kit.fontawesome.com/64d58efce2.js"
+  crossorigin="anonymous"></script>
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
 
@@ -650,7 +652,7 @@
                 <h4>Copy Writer</h4>
                 <p>
                   <i class="bx bxs-quote-alt-left quote-icon-left"></i>
-                  pekerjaan apapun akan lebih mudah dikerjakan dengan didampingi oleh teknologi.
+                  pekerjaan apapun akan lebih mudah dikerjakan dengan didampinginya teknologi.
                   <i class="bx bxs-quote-alt-right quote-icon-right"></i>
                 </p>
               </div>
@@ -727,67 +729,80 @@
 
         <div class="row mt-1">
 
-          <div class="col-lg-4 mt-5" style="margin-left: 55px;">
+          <div class="col-lg-4" >
             <div class="info">
               <div class="address">
                 <i class="bi bi-geo-alt"></i>
                 <h4>Lokasi :</h4>
                 <p>Jalan Babakan Radio NO 36A ,Kota Bandung</p>
               </div>
-            </div>
-          </div>
 
-          <div class="col-lg-2 mt-3" style="margin-left: 30px;" >
-            <div class="info">
+
+
               <div class="email">
                 <i class="bi bi-envelope"></i>
                 <h4>Email :</h4>
                 <p>arkaandevaanu@gmail.com</p>
               </div>
-            </div>
-          </div>
 
-          <div class="col-lg-2 mt-3" style="margin-left: 150px; margin-bottom: 50px;">
-            <div class="info">
+
+
+
               <div class="phone">
                 <i class="bi bi-phone"></i>
                 <h4>Telepon :</h4>
                 <p>0896 6907 3604</p>
               </div>
+
+
+
             </div>
           </div>
 
 
 
+          <div class="col-lg-8 mt-5 mt-lg-0">
 
+          <!--   <div class="alert alert-success d-flex align-items-center" role="alert">
+              <i class="fas fa-check"></i>&nbsp; Terima Kasih ! pesan anda telah kami terima.
+            </div> -->
 
-
-          <!-- <div class="col-lg-8 mt-5 mt-lg-0">
-
-            <form action="forms/contact.php" method="post" role="form" class="php-email-form">
+            <form action="" method="post" role="form" class="php-email-form" name="submit-to-google-sheet">
               <div class="row">
                 <div class="col-md-6 form-group">
-                  <input type="text" name="name" class="form-control" id="name" placeholder="Your Name" required>
+                  <input type="text" name="nama" class="form-control" id="name" placeholder="Nama" required>
                 </div>
                 <div class="col-md-6 form-group mt-3 mt-md-0">
-                  <input type="email" class="form-control" name="email" id="email" placeholder="Your Email" required>
+                  <input type="email" class="form-control" name="email" id="email" placeholder="Email" required>
                 </div>
               </div>
               <div class="form-group mt-3">
                 <input type="text" class="form-control" name="subject" id="subject" placeholder="Subject" required>
               </div>
               <div class="form-group mt-3">
-                <textarea class="form-control" name="message" rows="5" placeholder="Message" required></textarea>
+                <textarea class="form-control" name="pesan" rows="5" placeholder="Pesan..." required></textarea>
               </div>
               <div class="my-3">
-                <div class="loading">Loading</div>
-                <div class="error-message"></div>
-                <div class="sent-message">Your message has been sent. Thank you!</div>
+
+                <!-- LOADING -->
+                <div class="d-flex align-items-center btn-loading d-none">
+                  <strong>Loading...</strong>
+                  <div class="spinner-border ms-auto" role="status" aria-hidden="true"></div>
+                </div>
+                <!--ALERT GAGAL -->
+                <div class="error-message btn-error d-none">Gagal ! ,pesan anda tidak terkirim.</div>
+
+                <!--ALERT BERHASIL -->
+                <div class="alert alert-success alert-dismissible fade show btn-sukses d-none" role="alert">
+                  <strong>Terima Kasih !</strong>, Pesan anda sudah kami terima.
+                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                
               </div>
-              <div class="text-center"><button type="submit">Send Message</button></div>
+              <div class="text-center"><button type="submit" class="btn-kirim">Kirim pesan</button></div>
             </form>
 
-          </div> -->
+          </div>
 
         </div>
 
@@ -837,6 +852,40 @@
 
   <!-- Template Main JS File -->
   <script src="assets/js/main.js"></script>
+
+
+  <!-- MEMASUKAN FORM KE GOOGLE SHEETS -->
+  <script>
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbz8yjA_GjXvU-uwnFLT2M_pRlPraNf0fXwQxwnSWkLUbMbbXf-oDwW7C1NsTev-0mOC2Q/exec'
+    const form = document.forms['submit-to-google-sheet']
+    const btnKirim = document.querySelector('.btn-kirim');
+    const btnLoading = document.querySelector('.btn-loading');
+    const myAlert = document.querySelector('.btn-sukses');
+
+    form.addEventListener('submit', e => {
+
+      e.preventDefault();
+      // ketia tmbol submit di klik, tampilkan tmbol loading
+      btnLoading.classList.toggle('d-none');
+      btnKirim.classList.toggle('d-none');
+      fetch(scriptURL, { method: 'POST', body: new FormData(form)})
+
+      .then(response => {
+        // ketia tmbol submit di klik, hilangkan tmbol loading
+        btnLoading.classList.toggle('d-none');
+        btnKirim.classList.toggle('d-none');
+        //tampilkan alert
+        myAlert.classList.toggle('d-none');
+        //reset form
+        form.reset();
+        console.log('Success!', response)
+      })
+
+      .catch(error => console.error('Error!', error.message))
+    })
+  </script>
+
+
 
 </body>
 
